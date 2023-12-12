@@ -285,3 +285,139 @@ barplot(
   legend.text = unique(subset_data$marital.status),
   args.legend = list(title = "Marital Status")
 )
+
+-----------checka
+
+
+  
+  
+  subset_data <- data[, c("age", "capital.gain", "race")]
+barplot(
+  tapply(subset_data$capital.gain, list(subset_data$age, subset_data$race), mean),
+  beside = TRUE,
+  main = "Average Capital Gain by Age and race",
+  xlab = "Age",
+  ylab = "Average Capital Gain",
+  args.legend = list(title = "race")
+)
+------
+  library(tidyverse)
+library(scales)
+
+education_percentage <- data %>%
+  group_by(race, education) %>%
+  summarise(count = n()) %>%
+  group_by(race) %>%
+  mutate(percentage = (count / sum(count)) * 100) %>%
+  arrange(race, desc(education))
+
+ggplot(education_percentage, aes(x = race, y = percentage, fill = education)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  labs(title = "Percentage Distribution of Education Levels by Race",
+       x = "Race",
+       y = "Percentage") +
+  theme_minimal()
+
+-----
+  
+install.packages("corrplot")
+library(corrplot)
+
+library("ggplot2")
+library("dplyr")
+library("tm") 
+library("stats")  
+options(warn=-1) 
+
+
+df <- data
+
+install.packages("corrplot")
+library(corrplot)
+install.packages("knitr")
+library(knitr)
+
+
+numeric_df <- df[sapply(df, is.numeric)]
+
+
+correlation_matrix <- cor(numeric_df)
+
+
+print(correlation_matrix)
+kable(correlation_matrix)
+
+
+---
+  #  to remove a specific column , 'df' is  data frame
+  df <- df[, -which(names(df) == "income_less_than_equal_to_50K_or_not")]
+
+corrplot(correlation_matrix, method="color", 
+         col=colorRampPalette(c("white", "red"))
+         (200), 
+         type="upper", 
+         addCoef.col = "black", 
+         tl.col="black", tl.srt=46) 
+
+-----------
+  subset_data <- data[, c("occupation", "capital.gain")]
+
+library(ggplot2)
+
+ggplot(subset_data, aes(x = occupation, y = capital.gain, fill = occupation)) +
+  geom_violin(trim = FALSE) +
+  labs(title = "Violin Plot of Capital Gain Across Different Occupations",
+       x = "Occupation",
+       y = "Capital Gain") +
+  theme_minimal()
+
+------
+  library(plotly)
+# Create a pie chart for the sum of capital gains by occupation
+  capital_gain_by_occupation <- tapply(subset_data$capital.gain, subset_data$occupation, sum)
+
+# Create a color palette for the pie chart
+colors <- rainbow(length(capital_gain_by_occupation))
+
+# Create a plotly pie chart
+pie_chart <- plot_ly(labels = names(capital_gain_by_occupation),
+                     values = capital_gain_by_occupation,
+                     type = 'pie',
+                     marker = list(colors = colors),
+                     textinfo = 'label+percent',
+                     textposition = 'inside',
+                     insidetextfont = list(color = '#FFFFFF'),  # Text color inside the pie
+                     hole = 0.4  # Hole in the middle for a donut chart effect
+)
+
+# Set layout options for better visibility
+layout_options <- list(title = "Distribution of Capital Gain by Occupation",
+                       showlegend = FALSE  # Hide legend for better clarity
+)
+
+# Add layout options to the pie chart
+pie_chart <- pie_chart %>% layout(layout_options)
+
+# Display interactive pie-chart
+pie_chart
+
+-----------
+  library(ggplot2)
+ggplot(subset_data, aes(x = age, y = capital.gain, fill = marital.status)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+    title = "Average Capital Gain by Age and Marital Status",
+    x = "Age",
+    y = "Average Capital Gain",
+    fill = "Marital Status"
+  ) +
+  theme_minimal()
+------
+
+
+
+
+
+
+
